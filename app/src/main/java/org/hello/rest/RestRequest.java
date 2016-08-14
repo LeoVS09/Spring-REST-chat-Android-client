@@ -13,21 +13,23 @@ import java.util.Map;
  */
 public class RestRequest {
     final static String serverUrl = "http://188.114.217.43:9090";
-    Map<String, String> vars = new HashMap<String, String>();
-    ArrayList<String> keys = new ArrayList<String>();
+    String prefix;
+    String user;
     RestTemplate restTemplate;
     public RestRequest() throws Exception{
         restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
     }
-    public <T> T send(String postfix,Object request,Class<T> responseType) throws Exception{
-        String url = serverUrl + "/" + postfix + "/{" + keys.get(0) + "}";
+    public <T> T send(Object request,Class<T> responseType) throws Exception{
+        String url = serverUrl + "/" + prefix + "/{userLogin}";
+        Map<String, String> vars = new HashMap<String, String>();
+        vars.put("userLogin",user);
         return restTemplate.postForObject(url,request,responseType,vars);
     }
-    public RestRequest put(String key, String var){
-        vars.put(key,var);
-        keys.add(key);
+    public RestRequest in(String prefix, String user){
+        this.prefix = prefix;
+        this.user = user;
         return this;
     }
 

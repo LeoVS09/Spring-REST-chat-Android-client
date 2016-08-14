@@ -4,7 +4,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -98,11 +101,13 @@ public class MainActivity extends ActionBarActivity implements View.OnKeyListene
         @Override
         protected Message doInBackground(Message... params) {
 
-
+            ArrayList<String> vars = new ArrayList<>();
             try {
 
                 RestRequest rest = new RestRequest();
-                return rest.put("userLogin", username).send("message",params[0], Message.class);
+                //rest.in  определят что отсылка произойдет по адресу http://{host}/message/{username} и возврашает rest
+                //rest.send отсылает обьект params[0] и возврашает обьект типа Message.class
+                return rest.in("message", username).send(params[0], Message.class);
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
             }
