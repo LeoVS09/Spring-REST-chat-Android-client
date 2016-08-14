@@ -25,7 +25,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 public class MainActivity extends ActionBarActivity implements View.OnKeyListener, View.OnClickListener {
-    final String serverUrl = "http://188.114.217.43:9090";
+
     MessageAdapter messageAdapter;
     ListView messagesView;
     EditText messageInput;
@@ -51,20 +51,12 @@ public class MainActivity extends ActionBarActivity implements View.OnKeyListene
         messageAdapter = new MessageAdapter(this, new ArrayList<Message>());
         messagesView = (ListView) findViewById(R.id.messages_view);
         messagesView.setAdapter(messageAdapter);
-
-
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new PlaceholderFragment())
-//                    .commit();
-//        }
     }
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP){
+        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)
             postMessage();
-        }
         return true;
     }
 
@@ -75,25 +67,14 @@ public class MainActivity extends ActionBarActivity implements View.OnKeyListene
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-//        if (id == R.id.action_refresh) {
-//            new HttpRequestTask().execute("lol");
-//            return true;
-//        }
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        if (id == R.id.action_settings) return true;
         return super.onOptionsItemSelected(item);
     }
 
@@ -112,18 +93,16 @@ public class MainActivity extends ActionBarActivity implements View.OnKeyListene
     }
 
     private class HttpRequestTask extends AsyncTask<Message, Void, Message> {
+
+
         @Override
         protected Message doInBackground(Message... params) {
-            final String url = serverUrl + "/message";
-            Map<String, String> vars = new HashMap<String, String>();
-            vars.put("userLogin", username);
-            try {
-                RestTemplate restTemplate = new RestTemplate();
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-                Message message = restTemplate.postForObject(url + "/{userLogin}",params[0], Message.class, vars);
-                return message;
+
+            try {
+
+                RestRequest rest = new RestRequest();
+                return rest.put("userLogin", username).send("message",params[0], Message.class);
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
             }
