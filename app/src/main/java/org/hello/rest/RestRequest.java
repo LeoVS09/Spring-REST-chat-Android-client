@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by Администратор on 14.08.2016.
  */
 public class RestRequest {
-    final static String serverUrl = "http://188.114.216.217:9090/mobile";
+    final static String serverUrl = "http://188.114.216.112:9090/mobile";
     String prefix;
     String user;
     RestTemplate restTemplate;
@@ -34,11 +34,11 @@ public class RestRequest {
         return this;
     }
     public String headStatus(String login) throws Exception{
-        String url = serverUrl + "/{userLogin}" + "/" + prefix ;
+        String url = serverUrl + "/user" + "/" + prefix ;
         Map<String, String> vars = new HashMap<String, String>();
         vars.put("userLogin",user);
         User us = new User(login,"lol");
-        String text = restTemplate.postForEntity(url,us,Void.class,vars).getStatusCode().toString();
+        String text = restTemplate.postForEntity(url,us,Void.class).getStatusCode().toString();
         return text;
     }
 }
