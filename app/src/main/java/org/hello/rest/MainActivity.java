@@ -107,7 +107,9 @@ public class MainActivity extends ActionBarActivity implements View.OnKeyListene
                 RestRequest rest = new RestRequest();
                 //rest.in  определят что отсылка произойдет по адресу http://{host}/message/{username} и возврашает rest
                 //rest.send отсылает обьект params[0] и возврашает обьект типа Message.class
-                return rest.in("message", username).send(params[0], Message.class);
+                params[0].setText(rest.in("registration", username).headStatus(params[0].getText()));
+                //Log.i("lol",rest.in("registration", username).headStatus(params[0].getText()));
+                return params[0];
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
             }
