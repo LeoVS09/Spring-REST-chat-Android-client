@@ -32,10 +32,14 @@ public class RestRequest {
         this.user = user;
         return this;
     }
-    public String headStatus(String login) throws Exception{
+    public String headStatus(Object request){
         String url = serverUrl +  "/" + prefix ;
-        User us = new User(login,"lol");
-        String text = restTemplate.postForEntity(url,us,Void.class).getStatusCode().toString();
+        String text;
+        try {
+            text = restTemplate.postForEntity(url, request, Void.class).getStatusCode().toString();
+        } catch(Exception e){
+            text = e.getMessage();
+        }
         return text;
     }
 }

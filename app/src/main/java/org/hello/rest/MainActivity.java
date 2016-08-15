@@ -25,6 +25,7 @@ import android.widget.ListView;
 
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class MainActivity extends ActionBarActivity implements View.OnKeyListener, View.OnClickListener {
@@ -110,14 +111,14 @@ public class MainActivity extends ActionBarActivity implements View.OnKeyListene
                 //params[0].setText(rest.in("registration", username).headStatus(params[0].getText()));
                 //Log.i("lol",rest.in("registration", username).headStatus(params[0].getText()));
                 User us = new User(params[0].getText(),"lol");
-                us = rest.in("user/registration", username).send(us, User.class);
-                params[0].setText(us.getPassword());
+                params[0].setText(rest.in("user/login", username).headStatus(us));
+                //params[0].setText(us.getPassword());
                 return params[0];
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
             }
-
-            return null;
+            params[0].setText(params[0].getText() + ": Not send");
+            return params[0];
         }
 
         @Override
