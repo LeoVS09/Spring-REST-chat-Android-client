@@ -23,10 +23,9 @@ public class RestRequest {
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
     }
     public <T> T send(Object request,Class<T> responseType) throws Exception{
-        String url = serverUrl + "/" + prefix + "/{userLogin}";
-        Map<String, String> vars = new HashMap<String, String>();
-        vars.put("userLogin",user);
-        return restTemplate.postForObject(url,request,responseType,vars);
+        String url = serverUrl + "/" + prefix ;
+
+        return restTemplate.postForObject(url,request,responseType);
     }
     public RestRequest in(String prefix, String user){
         this.prefix = prefix;
@@ -34,9 +33,7 @@ public class RestRequest {
         return this;
     }
     public String headStatus(String login) throws Exception{
-        String url = serverUrl + "/user" + "/" + prefix ;
-        Map<String, String> vars = new HashMap<String, String>();
-        vars.put("userLogin",user);
+        String url = serverUrl +  "/" + prefix ;
         User us = new User(login,"lol");
         String text = restTemplate.postForEntity(url,us,Void.class).getStatusCode().toString();
         return text;
