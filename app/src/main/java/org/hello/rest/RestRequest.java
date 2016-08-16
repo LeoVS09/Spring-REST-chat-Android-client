@@ -1,5 +1,6 @@
 package org.hello.rest;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -42,4 +43,13 @@ public class RestRequest {
         }
         return text;
     }
+    public <T> ResponseEntity headEntity(Object request,Class<T> responseType)throws Exception{
+        String url = serverUrl +  "/" + prefix ;
+        ResponseEntity entity;
+
+            entity = restTemplate.postForEntity(url, request, responseType);
+
+        return entity;
+    }
+
 }

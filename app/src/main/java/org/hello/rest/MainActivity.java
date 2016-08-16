@@ -111,13 +111,13 @@ public class MainActivity extends ActionBarActivity implements View.OnKeyListene
                 //params[0].setText(rest.in("registration", username).headStatus(params[0].getText()));
                 //Log.i("lol",rest.in("registration", username).headStatus(params[0].getText()));
                 User us = new User(params[0].getText(),"lol");
-                params[0].setText(rest.in("user/login", username).headStatus(us));
+                params[0].setText(rest.in("user/login", username).headEntity(us, String.class).getBody().toString());
                 //params[0].setText(us.getPassword());
                 return params[0];
             } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
+                params[0].setText(e.getMessage());
             }
-            params[0].setText(params[0].getText() + ": Not send");
+
             return params[0];
         }
 
